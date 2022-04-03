@@ -1,0 +1,2 @@
+rootProject.name = "Smart City"
+include ':app'
