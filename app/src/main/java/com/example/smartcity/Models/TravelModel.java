@@ -8,12 +8,14 @@ public class TravelModel {
     private String travelDescription;
     private String id;
 
+    // TODO - location
+
     public String getTravelTitle() {
         return travelTitle;
     }
 
-    public void setTravelTitle(String travelTitle) {
-        this.travelTitle = travelTitle;
+    public void setTravelTitle(String title) {
+        this.travelTitle = title;
     }
 
     public TravelType getTravelType() {
@@ -28,8 +30,8 @@ public class TravelModel {
         return travelDescription;
     }
 
-    public void setTravelDescription(String travelDescription) {
-        this.travelDescription = travelDescription;
+    public void setTravelDescription(String description) {
+        this.travelDescription = description;
     }
 
     public String getId() {
@@ -39,4 +41,8 @@ public class TravelModel {
     public void setId(String id) {
         this.id = id;
     }
+
+
+
+
 }

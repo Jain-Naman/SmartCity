@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Smart City</string>
+    <string-array name="admin_actions">
+        <item> Add New </item>
+        <item> Delete </item>
+        <item> Update </item>
+    </string-array>
+
+    <string-array name="admin_activities">
+        <item> Travel </item>
+        <item> Job post</item>
+        <item> Institutions </item>
+        <item> News </item>
+    </string-array>
 </resources>
