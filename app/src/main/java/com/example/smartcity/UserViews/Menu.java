@@ -25,6 +25,7 @@ public class Menu extends AppCompatActivity {
         travelCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Toast.makeText(getApplicationContext(), "On click card demo", Toast.LENGTH_SHORT).show();
                 final Intent i = new Intent(Menu.this, TravelActivity.class);
                 startActivity(i);
