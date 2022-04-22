@@ -2,6 +2,7 @@ package com.example.smartcity.Adapters;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smartcity.AdminViews.AdminAdd;
 import com.example.smartcity.Globals;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
@@ -40,10 +42,18 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
         TravelModel item = travelList.get(position);
         holder.travelTitle.setText(item.getTravelTitle());
         holder.travelDescription.setText(item.getTravelDescription());
+
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(travelActivity.getApplicationContext(), "Editing mode", Toast.LENGTH_SHORT).show();
+
+                // go to AdminAdd with the existing information
+                final Intent i = new Intent(travelActivity.getApplication(), AdminAdd.class);
+                i.putExtra("category", "Travel");
+                i.putExtra("title", item.getTravelTitle());
+                i.putExtra("description", item.getTravelDescription());
+                travelActivity.startActivity(i);
             }
         });
 
@@ -58,6 +68,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 Toast.makeText(travelActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
+
                                 // travelList.removeThatItem(), Based on ID.
                             }
                         })

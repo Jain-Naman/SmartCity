@@ -30,17 +30,22 @@ public class AdminAdd extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add);
-        Intent i = getIntent();
-        String category = i.getStringExtra("category");
-        Log.d("unique_add", category);
 
         title = findViewById(R.id.addTitle);
         description = findViewById(R.id.addDescription);
         tag = findViewById(R.id.addTag);
         location = findViewById(R.id.addLocation);
         vacancies = findViewById(R.id.addVacancies);
+
         submit = findViewById(R.id.addSubmitButton);
 
+        Bundle extras = getIntent().getExtras();
+        String category = extras.getString("category");
+
+        if(extras.containsKey("title")){
+            title.setText(extras.getString("title"));
+            description.setText(extras.getString("description"));
+        }
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +60,8 @@ public class AdminAdd extends AppCompatActivity {
                         // TODO - dropdown for travel type
                         // send to controller
                         addController = new AddController(category, model);
-                        addController.addNewItemToDatabase();
-                        Toast.makeText(getApplicationContext(), "Details added successfully!", Toast.LENGTH_SHORT).show();
+                        addController.addNewItemToDatabase(); // or updateItem
+                        Toast.makeText(getApplicationContext(), "Details added successfully!", Toast.LENGTH_SHORT).show(); // or updated
                         finish();
                         break;
                     case "Job Post":
