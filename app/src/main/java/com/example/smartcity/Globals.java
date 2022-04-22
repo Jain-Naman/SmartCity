@@ -1,7 +1,7 @@
 package com.example.smartcity;
 
 public class Globals {
-    public static String currentUser;
+    public static String currentUser = "admin";
 
     public String getCurrentUser() {
         return currentUser;

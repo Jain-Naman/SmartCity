@@ -1,5 +1,7 @@
 package com.example.smartcity.Adapters;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +23,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
     List<TravelModel> travelList;
     private TravelActivity travelActivity;
 
-    // TODO: 02-04-2022 ADD Database Functionality
-    // private DatabaseHandler db;
-
-    public TravelAdapter(TravelActivity travelActivity){
+    public TravelAdapter(TravelActivity travelActivity) {
         this.travelActivity = travelActivity;
     }
 
@@ -51,7 +50,20 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(travelActivity.getApplicationContext(),"Delete mode", Toast.LENGTH_SHORT).show();
+                Toast.makeText(travelActivity.getApplicationContext(), "Delete mode", Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("Delete entry")
+                        .setMessage("Are you sure you want to delete this entry?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Continue with delete operation
+                                Toast.makeText(travelActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
+
+                                // travelList.removeThatItem(), Based on ID.
+                            }
+                        })
+                        .setNegativeButton("NO", null)
+                        .show();
             }
         });
     }
@@ -61,7 +73,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
         return travelList.size();
     }
 
-    public void setTravelList(List<TravelModel> travelList){
+    public void setTravelList(List<TravelModel> travelList) {
         this.travelList = travelList;
         notifyDataSetChanged();
     }
@@ -78,7 +90,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
             travelDescription = view.findViewById(R.id.travelDescription);
             editButton = view.findViewById(R.id.travelEdit);
             deleteButton = view.findViewById(R.id.travelDelete);
-            if (!Globals.currentUser.equals("admin")){
+            if (!Globals.currentUser.equals("admin")) {
                 editButton.setVisibility(View.INVISIBLE);
                 deleteButton.setVisibility(View.INVISIBLE);
             }

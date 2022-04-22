@@ -12,8 +12,6 @@ public class AddController {
         this.travelModel = travelModel;
     }
 
-    DatabaseHandler db = new DatabaseHandler();
-
     public void addNewItemToDatabase(){
 
     }
