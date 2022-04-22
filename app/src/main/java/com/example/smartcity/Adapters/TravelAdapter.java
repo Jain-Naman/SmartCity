@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smartcity.Globals;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
 import com.example.smartcity.UserViews.TravelActivity;
@@ -77,6 +78,10 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
             travelDescription = view.findViewById(R.id.travelDescription);
             editButton = view.findViewById(R.id.travelEdit);
             deleteButton = view.findViewById(R.id.travelDelete);
+            if (!Globals.currentUser.equals("admin")){
+                editButton.setVisibility(View.INVISIBLE);
+                deleteButton.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }

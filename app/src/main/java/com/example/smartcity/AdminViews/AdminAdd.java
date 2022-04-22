@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.smartcity.Adapters.AddController;
 import com.example.smartcity.Models.TravelModel;
@@ -52,10 +53,10 @@ public class AdminAdd extends AppCompatActivity {
                         model.setTravelDescription(description.getText().toString());
                         model.setTravelType(TravelType.AMUSEMENT_PARKS);
                         // TODO - dropdown for travel type
-                        Log.d("unique_add", model.toString());
                         // send to controller
                         addController = new AddController(category, model);
                         addController.addNewItemToDatabase();
+                        Toast.makeText(getApplicationContext(), "Details added successfully!", Toast.LENGTH_SHORT).show();
                         finish();
                         break;
                     case "Job Post":

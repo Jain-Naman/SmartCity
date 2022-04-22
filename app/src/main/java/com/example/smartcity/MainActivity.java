@@ -81,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements ILoginView {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Globals.currentUser = "user"; // set via Login information
+                Intent i = new Intent(MainActivity.this, AdminAction.class);
+                startActivity(i);
+                // finish();
+            }
+        });
 
 //                mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
 //                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
