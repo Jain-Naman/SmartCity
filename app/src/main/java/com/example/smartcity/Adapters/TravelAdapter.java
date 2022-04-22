@@ -58,7 +58,6 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 Toast.makeText(travelActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
-
                                 // travelList.removeThatItem(), Based on ID.
                             }
                         })
