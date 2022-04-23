@@ -22,6 +22,7 @@ public class AdminAdd extends AppCompatActivity {
     private EditText tag;
     private EditText location;
     private EditText vacancies;
+    private String id = null;
 
     private Button submit;
     private AddController addController;
@@ -46,6 +47,7 @@ public class AdminAdd extends AppCompatActivity {
         if(extras.containsKey("title")){
             title.setText(extras.getString("title"));
             description.setText(extras.getString("description"));
+            id = extras.getString("id");
             toUpdate = true;
         }
 
@@ -61,11 +63,12 @@ public class AdminAdd extends AppCompatActivity {
                         model.setTravelTitle(title.getText().toString());
                         model.setTravelDescription(description.getText().toString());
                         model.setTravelType(TravelType.AMUSEMENT_PARKS);
+                        model.setId(id);
                         // TODO - dropdown for travel type
                         // send to controller
                         addController = new AddController(category, model);
                         addController.addOrUpdateItemInDatabase(finalToUpdate); // or updateItem
-                        Toast.makeText(getApplicationContext(), "Details added successfully!", Toast.LENGTH_SHORT).show(); // or updated
+                        Toast.makeText(getApplicationContext(), "Details added/updated successfully!", Toast.LENGTH_SHORT).show(); // or updated
                         finish();
                         break;
                     case "Job Post":

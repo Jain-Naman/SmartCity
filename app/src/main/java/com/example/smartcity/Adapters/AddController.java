@@ -14,11 +14,15 @@ public class AddController {
         this.travelModel = travelModel;
     }
 
-    public void addOrUpdateItemInDatabase(boolean update){
-        if(!update){
+    public void addOrUpdateItemInDatabase(boolean update) {
+        if (!update) {
             databaseManager.insertData(category, travelModel);
+        } else {
+            databaseManager.updateData(category, travelModel);
         }
     }
 
-
+    public void deleteFromDatabase(){
+        databaseManager.deleteData(category, travelModel.getId());
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.smartcity.Utils.Database;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -44,6 +45,22 @@ public class DatabaseManager {
         databaseHandler.getData(category, firebaseResponseListener);
     }
 
+    public void updateData(String category, TravelModel travelModel) {
+
+        Map<String, Object> dataMap = new HashMap<>();
+
+        dataMap.put("title", travelModel.getTravelTitle());
+        dataMap.put("description", travelModel.getTravelDescription());
+
+        Log.d("firebase", "IN UPDATE DATA");
+        databaseHandler.modifyData(dataMap, category, travelModel.getId());
+    }
+
+    public void deleteData(String category, String id){
+        databaseHandler.removeData(category, id);
+        Log.d("firebase", "Deleted document with id " + id);
+    }
+
     private class DatabaseHandler {
 
         DatabaseHandler() {
@@ -66,7 +83,6 @@ public class DatabaseManager {
         }
 
         public void getData(String category, FirebaseResponseListener<List<DocumentSnapshot>> firebaseResponseListener) {
-
             Task<QuerySnapshot> task = firestore.collection(category.toLowerCase()).get();
             task.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -82,6 +98,18 @@ public class DatabaseManager {
                     }
                 }
             });
+        }
+
+        public void modifyData(Map<String, Object> data, String category, String id) {
+            DocumentReference documentReference = firestore.collection(category.toLowerCase()).document(id);
+            Log.d("firebase", documentReference.getId());
+
+            documentReference.update("title", data.get("title"));
+            documentReference.update("description", data.get("description"));
+        }
+
+        public void removeData(String category, String id){
+            firestore.collection(category.toLowerCase()).document(id).delete();
         }
     }
 }

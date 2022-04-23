@@ -58,7 +58,9 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
                 i.putExtra("category", "Travel");
                 i.putExtra("title", item.getTravelTitle());
                 i.putExtra("description", item.getTravelDescription());
+                i.putExtra("id", item.getId());
                 travelActivity.startActivity(i);
+                travelActivity.finish();
             }
         });
 
@@ -73,8 +75,10 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 Toast.makeText(travelActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
-
-                                // travelList.removeThatItem(), Based on ID.
+                                DatabaseManager databaseManager = new DatabaseManager();
+                                databaseManager.deleteData("travel", item.getId());
+                                travelList.remove(position);
+                                notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("NO", null)
@@ -107,6 +111,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
                     travelModel.setTravelTitle(d.get("title").toString());
                     travelModel.setTravelDescription(d.get("description").toString());
                     travelModel.setId(d.getId());
+
                     Log.d("firebase", travelModel.getId());
                     travelModelList.add(travelModel);
                 }
