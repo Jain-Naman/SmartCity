@@ -3,6 +3,7 @@ package com.example.smartcity.Adapters;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,15 @@ import com.example.smartcity.Globals;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
 import com.example.smartcity.UserViews.TravelActivity;
+import com.example.smartcity.Utils.Database.DatabaseManager;
+import com.example.smartcity.Utils.FirebaseResponseListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder> {
-    List<TravelModel> travelList;
+public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder>{
+    List<TravelModel> travelList = new ArrayList<>();
     private TravelActivity travelActivity;
 
     public TravelAdapter(TravelActivity travelActivity) {
@@ -80,13 +85,36 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return travelList.size();
+        return travelList == null ? 0 : travelList.size();
     }
 
     public void setTravelList(List<TravelModel> travelList) {
         this.travelList = travelList;
         notifyDataSetChanged();
     }
+
+
+    public void getFromDatabase(){
+        List<TravelModel> travelModelList = new ArrayList<>();
+
+        DatabaseManager databaseManager = new DatabaseManager();
+
+        databaseManager.fetchData("travel", new FirebaseResponseListener<List<DocumentSnapshot>>() {
+            @Override
+            public void onCallback(List<DocumentSnapshot> response) {
+                for(DocumentSnapshot d: response){
+                    TravelModel travelModel = new TravelModel();
+                    travelModel.setTravelTitle(d.get("title").toString());
+                    travelModel.setTravelDescription(d.get("description").toString());
+                    travelModel.setId(d.getId());
+                    Log.d("firebase", travelModel.getId());
+                    travelModelList.add(travelModel);
+                }
+                setTravelList(travelModelList);
+            }
+        });
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView travelTitle;

@@ -41,11 +41,15 @@ public class AdminAdd extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         String category = extras.getString("category");
+        boolean toUpdate = false;
 
         if(extras.containsKey("title")){
             title.setText(extras.getString("title"));
             description.setText(extras.getString("description"));
+            toUpdate = true;
         }
+
+        boolean finalToUpdate = toUpdate;
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +64,7 @@ public class AdminAdd extends AppCompatActivity {
                         // TODO - dropdown for travel type
                         // send to controller
                         addController = new AddController(category, model);
-                        addController.addNewItemToDatabase(); // or updateItem
+                        addController.addOrUpdateItemInDatabase(finalToUpdate); // or updateItem
                         Toast.makeText(getApplicationContext(), "Details added successfully!", Toast.LENGTH_SHORT).show(); // or updated
                         finish();
                         break;

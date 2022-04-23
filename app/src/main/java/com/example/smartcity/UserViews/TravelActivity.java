@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.example.smartcity.Adapters.TravelAdapter;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
+import com.example.smartcity.Utils.Database.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,9 @@ public class TravelActivity extends AppCompatActivity {
         travelList.add(travel2);
         travelList.add(travel3);
 
-        travelAdapter.setTravelList(travelList);
+        travelAdapter.getFromDatabase();
+
+        // travelAdapter.setTravelList(travelList);
         travelAdapter.notifyDataSetChanged();
 
     }
