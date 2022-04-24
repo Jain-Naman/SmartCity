@@ -1,9 +1,11 @@
 package com.example.smartcity.Utils.Database;
 
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.smartcity.Globals;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.Utils.FirebaseResponseListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -13,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -44,6 +47,10 @@ public class DatabaseManager {
         databaseHandler.getData(category, firebaseResponseListener);
     }
 
+    public void editMovieBooking(String email, String docId, FirebaseResponseListener<Boolean> firebaseResponseListener){
+        databaseHandler.editMovieData(email, docId, firebaseResponseListener);
+    }
+
     private class DatabaseHandler {
 
         DatabaseHandler() {
@@ -61,6 +68,22 @@ public class DatabaseManager {
                 @Override
                 public void onFailure(@NonNull @NotNull Exception e) {
                     Log.w("firebase", "Error adding document", e);
+                }
+            });
+        }
+
+        public void editMovieData(String email, String docId, FirebaseResponseListener<Boolean> firebaseResponseListener) {
+            Log.d("firebase", email);
+            DocumentReference documentReference = firestore.collection("movies").document(docId);
+            documentReference.update("booked", FieldValue.arrayUnion(email)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    firebaseResponseListener.onCallback(true);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull @org.jetbrains.annotations.NotNull Exception e) {
+                    firebaseResponseListener.onCallback(false);
                 }
             });
         }

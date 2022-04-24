@@ -122,5 +122,31 @@
 
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/movieCard"
+        android:layout_below="@+id/generalCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:padding="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="12dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:text="Movies"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:padding="8dp"
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="10dp"
+            android:textAllCaps="false"/>
+
+    </androidx.cardview.widget.CardView>
+
 
 </RelativeLayout>

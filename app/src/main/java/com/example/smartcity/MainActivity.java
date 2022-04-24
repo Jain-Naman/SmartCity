@@ -52,14 +52,14 @@ public class MainActivity extends AppCompatActivity implements ILoginView {
         password = findViewById(R.id.password);
         loginPresenter = new LoginController(this);
 
-
         mAuth = FirebaseAuth.getInstance();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Globals.currentUser = "user"; // set via Login information
-                Intent i = new Intent(MainActivity.this, AdminAction.class);
+                Globals.email = email.getText().toString();
+                Intent i = new Intent(MainActivity.this, Menu.class);
                 startActivity(i);
                 // finish();
             }
