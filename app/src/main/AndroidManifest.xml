@@ -9,10 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartCity">
+        <activity android:name=".UserViews.NewsActivity"></activity>
+        <activity android:name=".UserViews.JobseekerActivity" />
         <activity android:name=".UserViews.TravelActivity" />
-        <activity android:name=".AdminViews.AdminAdd"></activity>
+        <activity android:name=".AdminViews.AdminAdd" />
         <activity android:name=".AdminViews.AdminAction" />
-        <activity android:name=".UserViews.TravelActivity" />
+        <activity android:name=".UserViews.InstitutionActivity" />
         <activity android:name=".UserViews.Menu" />
         <activity
             android:name=".SplashScreen"

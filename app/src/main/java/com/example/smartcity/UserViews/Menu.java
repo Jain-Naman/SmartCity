@@ -33,5 +33,41 @@ public class Menu extends AppCompatActivity {
                 
             }
         });
+        CardView jobCard = findViewById(R.id.jobCard);
+        jobCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(getApplicationContext(), "On click card demo", Toast.LENGTH_SHORT).show();
+                final Intent i = new Intent(Menu.this, JobseekerActivity.class);
+                startActivity(i);
+                Toast.makeText(getApplicationContext(), "Returned from the activity", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        CardView eduCard = findViewById(R.id.eduCard);
+        eduCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(getApplicationContext(), "On click card demo", Toast.LENGTH_SHORT).show();
+                final Intent i = new Intent(Menu.this, InstitutionActivity.class);
+                startActivity(i);
+                Toast.makeText(getApplicationContext(), "Returned from the activity", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        CardView generalCard = findViewById(R.id.generalCard);
+        generalCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(getApplicationContext(), "On click card demo", Toast.LENGTH_SHORT).show();
+                final Intent i = new Intent(Menu.this, NewsActivity.class);
+                startActivity(i);
+                Toast.makeText(getApplicationContext(), "Returned from the activity", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 }

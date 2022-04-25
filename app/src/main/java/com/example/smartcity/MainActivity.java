@@ -15,6 +15,7 @@ import com.example.smartcity.AdminViews.AdminAction;
 import com.example.smartcity.Adapters.ILoginController;
 import com.example.smartcity.Adapters.LoginController;
 import com.example.smartcity.UserViews.ILoginView;
+import com.example.smartcity.UserViews.JobseekerActivity;
 import com.example.smartcity.UserViews.Menu;
 import com.example.smartcity.UserViews.TravelActivity;
 
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements ILoginView {
             @Override
             public void onClick(View view) {
                 // Globals.currentUser = "user"; // set via Login information
-                Intent i = new Intent(MainActivity.this, AdminAction.class);
+                Intent i = new Intent(MainActivity.this, Menu.class);
                 startActivity(i);
                 // finish();
             }
