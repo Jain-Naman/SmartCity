@@ -35,33 +35,7 @@ public class NewsActivity extends AppCompatActivity {
 
         newsRecyclerView.setAdapter(newsAdapter);
 
-        NewsModel news1 = new NewsModel();
-        news1.setNewsHeadline("Title 1");
-        news1.setDetailedNews("Lorem ipsum dolor sit amet. 33 consequatur quas in galisum asperiores " +
-                "non beatae inventore? Id deleniti eveniet vel aliquid assumenda in explicabo " +
-                "doloremque cum corrupti nostrum. Vel laborum tempora qui galisum blanditiis nam " +
-                "temporibus doloremque ut atque facilis sed obcaecati quasi non culpa quisquam aut tempore voluptatem.");
-
-        NewsModel news2 = new NewsModel();
-        news2.setNewsHeadline("Title 2");
-        news2.setDetailedNews("Lorem ipsum dolor sit amet. 33 consequatur quas in galisum asperiores " +
-                "non beatae inventore? Id deleniti eveniet vel aliquid assumenda in explicabo " +
-                "doloremque cum corrupti nostrum. Vel laborum tempora qui galisum blanditiis nam " +
-                "temporibus doloremque ut atque facilis sed obcaecati quasi non culpa quisquam aut tempore voluptatem.");
-
-        NewsModel news3 = new NewsModel();
-        news3.setNewsHeadline("Title 3");
-        news3.setDetailedNews("Lorem ipsum dolor sit amet. 33 consequatur quas in galisum asperiores " +
-                "non beatae inventore? Id deleniti eveniet vel aliquid assumenda in explicabo " +
-                "doloremque cum corrupti nostrum. Vel laborum tempora qui galisum blanditiis nam " +
-                "temporibus doloremque ut atque facilis sed obcaecati quasi non culpa quisquam aut tempore voluptatem.");
-
-        newsList.add(news1);
-        newsList.add(news2);
-        newsList.add(news3);
-
-        newsAdapter.setNewsList(newsList);
-        newsAdapter.notifyDataSetChanged();
+        newsAdapter.getFromDatabase();
 
     }
 }

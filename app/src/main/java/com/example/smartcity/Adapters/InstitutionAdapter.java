@@ -1,5 +1,8 @@
 package com.example.smartcity.Adapters;
 
+import com.example.smartcity.AdminViews.AdminAdd;
+
+import android.util.Log;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -9,15 +12,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.example.smartcity.Utils.Database.DatabaseManager;
-//
-//import com.example.smartcity.Utils.FirebaseResponseListener;
-
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.example.smartcity.Utils.Database.DatabaseManager;
+//
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.smartcity.Utils.FirebaseResponseListener;
 
 import android.content.Intent;
-
-import com.example.smartcity.AdminViews.AdminAdd;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,9 +28,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.smartcity.Globals;
 import com.example.smartcity.Models.InstitutionModel;
 import com.example.smartcity.UserViews.InstitutionActivity;
-import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
-import com.example.smartcity.UserViews.TravelActivity;
+
+import com.example.smartcity.Utils.FirebaseResponseListener;
 
 import java.util.List;
 
@@ -77,6 +80,11 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                                 // Continue with delete operation
                                 Toast.makeText(institutionActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
                                 // travelList.removeThatItem(), Based on ID.
+                                // Continue with delete operation
+                                DatabaseManager databaseManager = new DatabaseManager();
+                                databaseManager.deleteData("institute", item.getId());
+                                institutionList.remove(position);
+                                notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("NO", null)
@@ -87,7 +95,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
 
     @Override
     public int getItemCount() {
-        return institutionList.size();
+        return institutionList == null ? 0 : institutionList.size();
     }
 
     public void setInstitutionList(List<InstitutionModel> institutionList) {
@@ -95,29 +103,27 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
         notifyDataSetChanged();
     }
 
-    /*public void getFromDatabase(){
+    public void getFromDatabase() {
         List<InstitutionModel> institutionModelList = new ArrayList<>();
 
         DatabaseManager databaseManager = new DatabaseManager();
 
-        databaseManager.fetchData("travel", new FirebaseResponseListener<List<DocumentSnapshot>>() {
+        databaseManager.fetchData("institutions", new FirebaseResponseListener<List<DocumentSnapshot>>() {
             @Override
+
             public void onCallback(List<DocumentSnapshot> response) {
-                for(DocumentSnapshot d: response){
-                    TravelModel travelModel = new TravelModel();
-                    travelModel.setTravelTitle(d.get("title").toString());
-                    travelModel.setTravelDescription(d.get("description").toString());
-                    travelModel.setId(d.getId());
-                    Log.d("firebase", travelModel.getId());
-                    travelModelList.add(travelModel);
+                for (DocumentSnapshot d : response) {
+                    InstitutionModel institutionModel = new InstitutionModel();
+                    institutionModel.setInstitutionName(d.get("title").toString());
+                    institutionModel.setInstitutionDescription(d.get("description").toString());
+                    institutionModel.setId(d.getId());
+                    Log.d("firebase", institutionModel.getId());
+                    institutionModelList.add(institutionModel);
                 }
-                setTravelList(travelModelList);
+                setInstitutionList(institutionModelList);
             }
         });
-    }*/
-
-
-
+    }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

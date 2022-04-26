@@ -68,6 +68,11 @@ public class DatabaseManager {
         databaseHandler.editMovieData(email, docId, firebaseResponseListener);
     }
 
+    public void editJobBooking(String email, String docId, FirebaseResponseListener<Boolean> firebaseResponseListener){
+        databaseHandler.editJobData(email, docId, firebaseResponseListener);
+    }
+
+
     private class DatabaseHandler {
 
         DatabaseHandler() {
@@ -89,6 +94,22 @@ public class DatabaseManager {
             });
         }
 
+        public void editJobData(String email, String docId, FirebaseResponseListener<Boolean> firebaseResponseListener) {
+            Log.d("firebase", email);
+            DocumentReference documentReference = firestore.collection("job post").document(docId);
+            documentReference.update("applied", FieldValue.arrayUnion(email)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    firebaseResponseListener.onCallback(true);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    firebaseResponseListener.onCallback(false);
+                }
+            });
+        }
+
         public void editMovieData(String email, String docId, FirebaseResponseListener<Boolean> firebaseResponseListener) {
             Log.d("firebase", email);
             DocumentReference documentReference = firestore.collection("movies").document(docId);
@@ -99,7 +120,7 @@ public class DatabaseManager {
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onFailure(@NonNull @org.jetbrains.annotations.NotNull Exception e) {
+                public void onFailure(@NonNull Exception e) {
                     firebaseResponseListener.onCallback(false);
                 }
             });

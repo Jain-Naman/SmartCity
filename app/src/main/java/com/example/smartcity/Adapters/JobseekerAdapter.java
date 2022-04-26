@@ -2,6 +2,7 @@ package com.example.smartcity.Adapters;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +12,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartcity.Globals;
 import com.example.smartcity.Models.JobseekerModel;
+import com.example.smartcity.Models.MovieModel;
 import com.example.smartcity.UserViews.JobseekerActivity;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
 import com.example.smartcity.UserViews.TravelActivity;
+import com.example.smartcity.Utils.Database.DatabaseManager;
+import com.example.smartcity.Utils.FirebaseResponseListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JobseekerAdapter extends RecyclerView.Adapter<JobseekerAdapter.ViewHolder> {
@@ -43,7 +52,7 @@ public class JobseekerAdapter extends RecyclerView.Adapter<JobseekerAdapter.View
         JobseekerModel item = jobseekerList.get(position);
         holder.jobseekerName.setText(item.getJobseekerName());
         holder.jobseekerDescription.setText(item.getJobseekerDescription());
-        holder.NumberOfVacancies.setText("0"); // item.getNumberOfvacancies;
+        holder.NumberOfVacancies.setText(item.getNumberOfVacancies());
         Log.d("job","JOB SEEKER: " + holder.NumberOfVacancies.getText().toString());
 
         if (Integer.parseInt(holder.NumberOfVacancies.getText().toString()) == 0) {
@@ -75,29 +84,66 @@ public class JobseekerAdapter extends RecyclerView.Adapter<JobseekerAdapter.View
             }
         });
 
-        /*holder.applyButton.setOnClickListener(new View.OnClickListener() {
+        holder.applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(jobseekerActivity.getApplicationContext(), "Applied Successfully", Toast.LENGTH_SHORT).show();
-                holder.applyButton.setEnabled(false);
+                DatabaseManager databaseManager = new DatabaseManager();
+                databaseManager.editJobBooking(Globals.email, item.getId(), new FirebaseResponseListener<Boolean>() {
+                    @Override
+                    public void onCallback(Boolean response) {
+                        //bookedSeats = response;
+                        if (response) {
+                            Toast.makeText(jobseekerActivity.getApplicationContext(), "Applied", Toast.LENGTH_SHORT).show();
+                            Drawable unwrappedDrawable = AppCompatResources.getDrawable(jobseekerActivity.getApplicationContext(), R.drawable.ic_apply);
+                            Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+                            DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(jobseekerActivity.getApplicationContext(), R.color.background_holo_light_green));
 
-                holder.NumberOfVacancies.setText(String.valueOf(Integer.parseInt(item.getNumberOfVacancies()) - 1));
+                            holder.applyButton.setEnabled(false);
+                            holder.NumberOfVacancies.setText(String.valueOf(Integer.parseInt(item.getNumberOfVacancies()) - 1));
+                        } else {
+                            Toast.makeText(jobseekerActivity.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
-        });*/
-    }
-
-
-
+            });
+            }
 
 
     @Override
     public int getItemCount() {
-        return jobseekerList.size();
+        return jobseekerList == null ? 0 : jobseekerList.size();
     }
 
     public void setJobseekerList(List<JobseekerModel> jobseekerList) {
         this.jobseekerList = jobseekerList;
         notifyDataSetChanged();
+    }
+
+    public void getFromDatabase(){
+        List<JobseekerModel> jobseekerModelList = new ArrayList<>();
+
+        DatabaseManager databaseManager = new DatabaseManager();
+
+        databaseManager.fetchData("job post", new FirebaseResponseListener<List<DocumentSnapshot>>() {
+            @Override
+            public void onCallback(List<DocumentSnapshot> response) {
+                for(DocumentSnapshot d: response){
+                    JobseekerModel jobseekerModel = new JobseekerModel();
+                    jobseekerModel.setJobseekerName(d.get("title").toString());
+                    jobseekerModel.setJobseekerDescription(d.get("description").toString());
+                    jobseekerModel.setNumberOfVacancies(d.get("vacancies").toString());
+                    jobseekerModel.setId(d.getId());
+                    int applied = ((List<String>) d.get("applied")).size();
+                    int temp = Integer.parseInt(d.get("vacancies").toString());
+                    jobseekerModel.setNumberOfVacancies(String.valueOf(temp-applied));
+
+                    Log.d("firebase", jobseekerModel.getId());
+                    jobseekerModelList.add(jobseekerModel);
+                }
+                setJobseekerList(jobseekerModelList);
+            }
+        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -124,4 +170,3 @@ public class JobseekerAdapter extends RecyclerView.Adapter<JobseekerAdapter.View
         }
     }
 }
-
