@@ -33,5 +33,16 @@ public class Menu extends AppCompatActivity {
                 
             }
         });
+
+        CardView movieCard = findViewById(R.id.movieCard);
+        movieCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "On click movie", Toast.LENGTH_SHORT).show();
+                final Intent i = new Intent(Menu.this, MovieActivity.class);
+                startActivity(i);
+                Toast.makeText(getApplicationContext(), "Returned from the activity", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
