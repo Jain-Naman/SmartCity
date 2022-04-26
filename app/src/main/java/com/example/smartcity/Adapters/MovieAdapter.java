@@ -74,12 +74,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                         bookedSeats = response;
                         if (response) {
                             Toast.makeText(movieActivity.getApplicationContext(), "Booked", Toast.LENGTH_SHORT).show();
-                            Drawable unwrappedDrawable = AppCompatResources.getDrawable(movieActivity.getApplicationContext(), R.drawable.ic_apply);
-                            Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
-                            DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(movieActivity.getApplicationContext(), R.color.green));
-
                             holder.applyButton.setEnabled(false);
-
+                            holder.applyButton.setVisibility(view.INVISIBLE);
                             holder.movieSeats.setText(String.valueOf(Integer.parseInt(item.getMovieSeats()) - 1));
                         } else {
                             Toast.makeText(movieActivity.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();

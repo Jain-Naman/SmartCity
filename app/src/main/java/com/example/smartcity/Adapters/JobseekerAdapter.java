@@ -111,11 +111,8 @@ public class JobseekerAdapter extends RecyclerView.Adapter<JobseekerAdapter.View
                         //bookedSeats = response;
                         if (response) {
                             Toast.makeText(jobseekerActivity.getApplicationContext(), "Applied", Toast.LENGTH_SHORT).show();
-                            Drawable unwrappedDrawable = AppCompatResources.getDrawable(jobseekerActivity.getApplicationContext(), R.drawable.ic_apply);
-                            Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
-                            DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(jobseekerActivity.getApplicationContext(), R.color.background_holo_light_green));
-
                             holder.applyButton.setEnabled(false);
+                            holder.applyButton.setVisibility(view.INVISIBLE);
                             holder.NumberOfVacancies.setText(String.valueOf(Integer.parseInt(item.getNumberOfVacancies()) - 1));
                         } else {
                             Toast.makeText(jobseekerActivity.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
