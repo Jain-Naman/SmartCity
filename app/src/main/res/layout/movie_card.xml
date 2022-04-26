@@ -34,7 +34,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:background="@android:color/transparent"
-                android:drawableEnd="@drawable/ic_apply" />
+                android:drawableEnd="@drawable/ic_apply"
+                android:drawableTint="@color/blue"
+                />
 
 
         </RelativeLayout>

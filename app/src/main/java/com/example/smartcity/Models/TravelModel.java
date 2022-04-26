@@ -1,14 +1,10 @@
 package com.example.smartcity.Models;
 
-import com.example.smartcity.Utils.TravelType;
-
 public class TravelModel {
     private String travelTitle;
-    private TravelType travelType;
     private String travelDescription;
     private String id;
-
-    // TODO - location
+    private String location;
 
     public String getTravelTitle() {
         return travelTitle;
@@ -16,14 +12,6 @@ public class TravelModel {
 
     public void setTravelTitle(String title) {
         this.travelTitle = title;
-    }
-
-    public TravelType getTravelType() {
-        return travelType;
-    }
-
-    public void setTravelType(TravelType travelType) {
-        this.travelType = travelType;
     }
 
     public String getTravelDescription() {
@@ -42,7 +30,11 @@ public class TravelModel {
         this.id = id;
     }
 
+    public String getLocation() {
+        return location;
+    }
 
-
-
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

@@ -3,6 +3,7 @@ package com.example.smartcity.Adapters;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +56,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
 
                 // go to AdminAdd with the existing information
                 final Intent i = new Intent(travelActivity.getApplication(), AdminAdd.class);
-                i.putExtra("category", "Travel");
+                i.putExtra("category", "travel");
                 i.putExtra("title", item.getTravelTitle());
                 i.putExtra("description", item.getTravelDescription());
                 i.putExtra("id", item.getId());
@@ -85,6 +86,15 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
                         .show();
             }
         });
+
+        holder.travelLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getLocation()));
+                intent.setPackage("com.google.android.apps.maps");
+                travelActivity.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -110,6 +120,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
                     TravelModel travelModel = new TravelModel();
                     travelModel.setTravelTitle(d.get("title").toString());
                     travelModel.setTravelDescription(d.get("description").toString());
+                    travelModel.setLocation(d.get("location").toString());
                     travelModel.setId(d.getId());
 
                     Log.d("firebase", travelModel.getId());
@@ -126,6 +137,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
         TextView travelDescription;
         Button editButton;
         Button deleteButton;
+        Button travelLocation;
 
         ViewHolder(View view) {
             super(view);
@@ -133,6 +145,8 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
             travelDescription = view.findViewById(R.id.travelDescription);
             editButton = view.findViewById(R.id.travelEdit);
             deleteButton = view.findViewById(R.id.travelDelete);
+            travelLocation = view.findViewById(R.id.travelLocation);
+
             if (!Globals.currentUser.equals("admin")) {
                 editButton.setVisibility(View.INVISIBLE);
                 deleteButton.setVisibility(View.INVISIBLE);

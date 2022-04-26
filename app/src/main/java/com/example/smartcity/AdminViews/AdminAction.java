@@ -14,10 +14,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.smartcity.R;
+import com.example.smartcity.UserViews.InstitutionActivity;
+import com.example.smartcity.UserViews.JobseekerActivity;
+import com.example.smartcity.UserViews.MovieActivity;
+import com.example.smartcity.UserViews.NewsActivity;
 import com.example.smartcity.UserViews.TravelActivity;
 
 public class AdminAction extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private final String DEFAULT_CATEGORY = "Travel";
+    private final String DEFAULT_CATEGORY = "travel";
     private final String DEFAULT_ACTION = "Add New";
 
     private Spinner actionSpinner;
@@ -53,17 +57,36 @@ public class AdminAction extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Action: " + nextAction + " Category: " + nextCategory, Toast.LENGTH_SHORT).show();
-                if(nextAction.equals("Add New")){
+                if (nextAction.equals("add new")) {
                     Log.d("action", "Add new");
                     final Intent i = new Intent(AdminAction.this, AdminAdd.class);
                     i.putExtra("category", nextCategory);
                     startActivity(i);
-                }
-                else{
-                    final Intent i = new Intent(AdminAction.this, TravelActivity.class);
+                } else {
+                    Class c = TravelActivity.class;
+                    switch (nextCategory) {
+                        case "travel":
+                            c = TravelActivity.class;
+                            break;
+                        case "job post":
+                            c = JobseekerActivity.class;
+                            break;
+                        case "institutions":
+                            c = InstitutionActivity.class;
+                            break;
+                        case "news":
+                            c = NewsActivity.class;
+                            break;
+                        case "movies":
+                            c = MovieActivity.class;
+                            break;
+                        default:
+                            Log.d("admin_action_category", "Error selection");
+                            break;
+                    }
+                    final Intent i = new Intent(AdminAction.this, c);
                     i.putExtra("category", nextCategory);
                     startActivity(i);
-                    // finish();
                 }
             }
         });
@@ -72,11 +95,10 @@ public class AdminAction extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String item = (String) adapterView.getItemAtPosition(i);
-        if (((String) adapterView.getItemAtPosition(0)).equals("Add New")){
-            nextAction = item;
-        }
-        else {
-            nextCategory = item;
+        if ((adapterView.getItemAtPosition(0)).equals("Add New")) {
+            nextAction = item.toLowerCase();
+        } else {
+            nextCategory = item.toLowerCase();
         }
         Log.d("dropdown", nextAction);
         Log.d("dropdown", nextCategory);

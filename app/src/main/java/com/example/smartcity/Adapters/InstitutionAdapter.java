@@ -13,6 +13,7 @@ import android.widget.Toast;
 //
 //import com.example.smartcity.Utils.FirebaseResponseListener;
 
+import com.example.smartcity.Utils.Database.DatabaseManager;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import android.content.Intent;
@@ -58,10 +59,11 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                 Toast.makeText(institutionActivity.getApplicationContext(), "Editing mode", Toast.LENGTH_SHORT).show();
 
                 final Intent i = new Intent(institutionActivity.getApplication(), AdminAdd.class);
-                i.putExtra("category", "institute");
+                i.putExtra("category", "institutions");
                 i.putExtra("title", item.getInstitutionName());
                 i.putExtra("description", item.getInstitutionDescription());
                 institutionActivity.startActivity(i);
+                institutionActivity.finish();
             }
         });
 
@@ -76,7 +78,10 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 Toast.makeText(institutionActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
-                                // travelList.removeThatItem(), Based on ID.
+                                DatabaseManager databaseManager = new DatabaseManager();
+                                databaseManager.deleteData("institutions", item.getId());
+                                institutionList.remove(position);
+                                notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("NO", null)

@@ -1,6 +1,5 @@
 package com.example.smartcity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,23 +11,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.smartcity.AdminViews.AdminAction;
-import com.example.smartcity.Adapters.ILoginController;
-import com.example.smartcity.Adapters.LoginController;
+import com.example.smartcity.Models.User;
 import com.example.smartcity.UserViews.ILoginView;
-import com.example.smartcity.UserViews.JobseekerActivity;
 import com.example.smartcity.UserViews.Menu;
-import com.example.smartcity.UserViews.TravelActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.example.smartcity.Adapters.AuthHandler;
+import com.example.smartcity.Utils.FirebaseResponseListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements ILoginView {
     Button loginButton;
     EditText email, password;
-    ILoginController loginPresenter;
     private FirebaseAuth mAuth;
 
     @Override
@@ -51,34 +44,36 @@ public class MainActivity extends AppCompatActivity implements ILoginView {
         loginButton = findViewById(R.id.loginButton);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-        loginPresenter = new LoginController(this);
+        User user = new User(email.getText().toString().trim(), password.getText().toString().trim());
+        user.setEmail(email.getText().toString().trim());
+        user.setPassword(password.getText().toString().trim());
 
         mAuth = FirebaseAuth.getInstance();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Globals.currentUser = "user"; // set via Login information
-                Globals.email = email.getText().toString();
-                Intent i = new Intent(MainActivity.this, Menu.class);
-                startActivity(i);
-                // finish();
+                AuthHandler auth = new AuthHandler(mAuth, MainActivity.this);
+                auth.signIn(email.getText().toString().trim(), password.getText().toString().trim(), new FirebaseResponseListener<Boolean>() {
+                    @Override
+                    public void onCallback(Boolean response) {
+                        if (response) {
+                            Intent i;
+                            Globals.email = email.getText().toString();
+                            Globals.currentUser = email.getText().toString().substring(0, 5);
+                            if (Globals.currentUser.equals("admin")) {
+                                i = new Intent(MainActivity.this, AdminAction.class);
+                            } else {
+                                i = new Intent(MainActivity.this, Menu.class);
+                            }
+                            startActivity(i);
+                        } else {
+                            OnLoginError("Failed");
+                        }
+                    }
+                });
             }
         });
 
-//        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-//                .addOnCompleteListener(MainActivity.this, task -> {
-//                    if (task.isSuccessful()) {
-//                        // Sign in success, update UI with the signed-in user's information
-//                        Log.d("in", "signInWithEmail:success");
-//                        FirebaseUser user = mAuth.getCurrentUser();
-//                        final Intent i = new Intent(MainActivity.this, Menu.class);
-//                        startActivity(i);
-//                        // updateUI(user);
-//                    } else {
-//                        Log.d("in", "failed");
-//                        OnLoginError("Failed");
-//                    }
-//                });
     }
 }

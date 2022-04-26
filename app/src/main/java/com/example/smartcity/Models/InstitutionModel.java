@@ -1,6 +1,6 @@
 package com.example.smartcity.Models;
 
-public class InstitutionModel {
+public class InstitutionModel{
     private String institutionName;
     private String institutionDescription;
     private String id;

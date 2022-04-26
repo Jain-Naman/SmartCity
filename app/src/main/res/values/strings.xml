@@ -11,6 +11,7 @@
         <item> Job post</item>
         <item> Institutions </item>
         <item> News </item>
+        <item> Movies </item>
     </string-array>
     <string name="title_activity_institutions">InstitutionsActivity</string>
     <!-- Strings used for fragments for navigation -->

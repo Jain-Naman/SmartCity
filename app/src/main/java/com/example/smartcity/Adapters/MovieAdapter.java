@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +36,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
     List<MovieModel> movieList = new ArrayList<>();
     private MovieActivity movieActivity;
     private Boolean bookedSeats = false;
@@ -67,35 +68,26 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
             @Override
             public void onClick(View view) {
                 DatabaseManager databaseManager = new DatabaseManager();
-                databaseManager.editMovieBooking(Globals.email, item.getId(),new FirebaseResponseListener<Boolean>() {
+                databaseManager.editMovieBooking(Globals.email, item.getId(), new FirebaseResponseListener<Boolean>() {
                     @Override
                     public void onCallback(Boolean response) {
                         bookedSeats = response;
-                        if (response){
+                        if (response) {
                             Toast.makeText(movieActivity.getApplicationContext(), "Booked", Toast.LENGTH_SHORT).show();
                             Drawable unwrappedDrawable = AppCompatResources.getDrawable(movieActivity.getApplicationContext(), R.drawable.ic_apply);
                             Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
-                            DrawableCompat.setTint(wrappedDrawable, Color.rgb(0, 255, 0));
+                            DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(movieActivity.getApplicationContext(), R.color.green));
 
                             holder.applyButton.setEnabled(false);
 
                             holder.movieSeats.setText(String.valueOf(Integer.parseInt(item.getMovieSeats()) - 1));
-                        }
-                        else{
+                        } else {
                             Toast.makeText(movieActivity.getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
-                // go to AdminAdd with the existing information
-//                final Intent i = new Intent(travelActivity.getApplication(), AdminAdd.class);
-//                i.putExtra("category", "Travel");
-//                i.putExtra("title", item.getTravelTitle());
-//                i.putExtra("description", item.getTravelDescription());
-//                travelActivity.startActivity(i);
             }
         });
-
 
     }
 
@@ -110,7 +102,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
     }
 
 
-    public void getFromDatabase(){
+    public void getFromDatabase() {
         List<MovieModel> movieModelList = new ArrayList<>();
 
         DatabaseManager databaseManager = new DatabaseManager();
@@ -118,14 +110,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         databaseManager.fetchData("movies", new FirebaseResponseListener<List<DocumentSnapshot>>() {
             @Override
             public void onCallback(List<DocumentSnapshot> response) {
-                for(DocumentSnapshot d: response){
+                for (DocumentSnapshot d : response) {
                     MovieModel movieModel = new MovieModel();
                     movieModel.setMovieTitle(d.get("title").toString());
                     movieModel.setMovieDescription(d.get("description").toString());
                     movieModel.setId(d.getId());
                     int booked = ((List<String>) d.get("booked")).size();
                     int temp = Integer.parseInt(d.get("seats").toString());
-                    movieModel.setMovieSeats(String.valueOf(temp-booked));
+                    movieModel.setMovieSeats(String.valueOf(temp - booked));
 
                     Log.d("firebase", movieModel.getId());
                     movieModelList.add(movieModel);

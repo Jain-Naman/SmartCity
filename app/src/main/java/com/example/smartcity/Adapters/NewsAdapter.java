@@ -2,6 +2,7 @@ package com.example.smartcity.Adapters;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smartcity.AdminViews.AdminAdd;
 import com.example.smartcity.Globals;
 import com.example.smartcity.Models.NewsModel;
 import com.example.smartcity.UserViews.NewsActivity;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
 import com.example.smartcity.UserViews.TravelActivity;
+import com.example.smartcity.Utils.Database.DatabaseManager;
 
 import java.util.List;
 
@@ -46,6 +49,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Toast.makeText(newsActivity.getApplicationContext(), "Editing mode", Toast.LENGTH_SHORT).show();
+
+                // go to AdminAdd with the existing information
+                final Intent i = new Intent(newsActivity.getApplication(), AdminAdd.class);
+                i.putExtra("category", "news");
+                i.putExtra("title", item.getNewsHeadline());
+                i.putExtra("description", item.getDetailedNews());
+                i.putExtra("id", item.getId());
+                newsActivity.startActivity(i);
+                newsActivity.finish();
             }
         });
 
@@ -60,7 +72,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 Toast.makeText(newsActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
-                                // travelList.removeThatItem(), Based on ID.
+                                DatabaseManager databaseManager = new DatabaseManager();
+                                databaseManager.deleteData("news", item.getId());
+                                newsList.remove(position);
+                                notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("NO", null)

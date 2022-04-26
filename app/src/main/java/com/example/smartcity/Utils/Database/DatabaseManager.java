@@ -7,13 +7,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.smartcity.Globals;
+import com.example.smartcity.Models.GenericModel;
+import com.example.smartcity.Models.InstitutionModel;
+import com.example.smartcity.Models.JobseekerModel;
+import com.example.smartcity.Models.MovieModel;
+import com.example.smartcity.Models.NewsModel;
 import com.example.smartcity.Models.TravelModel;
+import com.example.smartcity.UserViews.InstitutionActivity;
 import com.example.smartcity.Utils.FirebaseResponseListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.annotations.NotNull;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -32,15 +39,44 @@ public class DatabaseManager {
     private DatabaseHandler databaseHandler = new DatabaseHandler();
 
     // TODO - create a generic model
-    public void insertData(String category, TravelModel travelModel) {
+    public void insertData(String category, GenericModel genericModel) {
         Map<String, Object> dataMap = new HashMap<>();
 
-        dataMap.put("title", travelModel.getTravelTitle());
-        dataMap.put("description", travelModel.getTravelDescription());
-        /*
-        dataMap.put("type", travelModel.getTravelType().toString());
-        dataMap.put("location", travelModel.getLocation());
-        */
+        switch (category) {
+            case "travel": {
+                TravelModel model = (TravelModel) genericModel.getObject();
+                dataMap.put("title", model.getTravelTitle());
+                dataMap.put("description", model.getTravelDescription());
+                dataMap.put("location", model.getLocation());
+                break;
+            }
+            case "job post": {
+                JobseekerModel model = (JobseekerModel) genericModel.getObject();
+                dataMap.put("title", model.getJobseekerName());
+                dataMap.put("description", model.getJobseekerDescription());
+                dataMap.put("vacancies", model.getNumberOfVacancies());
+                break;
+            }
+            case "institutions": {
+                InstitutionModel model = (InstitutionModel) genericModel.getObject();
+                dataMap.put("title", model.getInstitutionName());
+                dataMap.put("description", model.getInstitutionDescription());
+                break;
+            }
+            case "news": {
+                NewsModel model = (NewsModel) genericModel.getObject();
+                dataMap.put("title", model.getNewsHeadline());
+                dataMap.put("description", model.getDetailedNews());
+                break;
+            }
+            case "movies": {
+                MovieModel model = (MovieModel) genericModel.getObject();
+                dataMap.put("title", model.getMovieTitle());
+                dataMap.put("description", model.getMovieDescription());
+                dataMap.put("vacancies", model.getMovieSeats());
+                break;
+            }
+        }
         databaseHandler.putData(dataMap, category);
     }
 
@@ -48,15 +84,54 @@ public class DatabaseManager {
         databaseHandler.getData(category, firebaseResponseListener);
     }
 
-    public void updateData(String category, TravelModel travelModel) {
+    public void updateData(String category, GenericModel genericModel) {
 
         Map<String, Object> dataMap = new HashMap<>();
+        String id;
 
-        dataMap.put("title", travelModel.getTravelTitle());
-        dataMap.put("description", travelModel.getTravelDescription());
-
-        Log.d("firebase", "IN UPDATE DATA");
-        databaseHandler.modifyData(dataMap, category, travelModel.getId());
+        switch (category) {
+            case "travel": {
+                TravelModel model = (TravelModel) genericModel.getObject();
+                dataMap.put("title", model.getTravelTitle());
+                dataMap.put("description", model.getTravelDescription());
+                dataMap.put("location", model.getLocation());
+                id = model.getId();
+                break;
+            }
+            case "job post": {
+                JobseekerModel model = (JobseekerModel) genericModel.getObject();
+                dataMap.put("title", model.getJobseekerName());
+                dataMap.put("description", model.getJobseekerDescription());
+                dataMap.put("vacancies", model.getNumberOfVacancies());
+                id = model.getId();
+                break;
+            }
+            case "institutions": {
+                InstitutionModel model = (InstitutionModel) genericModel.getObject();
+                dataMap.put("title", model.getInstitutionName());
+                dataMap.put("description", model.getInstitutionDescription());
+                id = model.getId();
+                break;
+            }
+            case "news": {
+                NewsModel model = (NewsModel) genericModel.getObject();
+                dataMap.put("title", model.getNewsHeadline());
+                dataMap.put("description", model.getDetailedNews());
+                id = model.getId();
+                break;
+            }
+            case "movies": {
+                MovieModel model = (MovieModel) genericModel.getObject();
+                dataMap.put("title", model.getMovieTitle());
+                dataMap.put("description", model.getMovieDescription());
+                dataMap.put("vacancies", model.getMovieSeats());
+                id = model.getId();
+                break;
+            }
+            default:
+                id = null;
+        }
+        databaseHandler.modifyData(dataMap, category, id);
     }
 
     public void deleteData(String category, String id) {
@@ -64,7 +139,7 @@ public class DatabaseManager {
         Log.d("firebase", "Deleted document with id " + id);
     }
 
-    public void editMovieBooking(String email, String docId, FirebaseResponseListener<Boolean> firebaseResponseListener){
+    public void editMovieBooking(String email, String docId, FirebaseResponseListener<Boolean> firebaseResponseListener) {
         databaseHandler.editMovieData(email, docId, firebaseResponseListener);
     }
 
@@ -124,14 +199,22 @@ public class DatabaseManager {
         }
 
         public void modifyData(Map<String, Object> data, String category, String id) {
-            DocumentReference documentReference = firestore.collection(category.toLowerCase()).document(id);
+            CollectionReference collectionReference = firestore.collection(category.toLowerCase());
+            DocumentReference documentReference = collectionReference.document(id);
+
             Log.d("firebase", documentReference.getId());
 
             documentReference.update("title", data.get("title"));
             documentReference.update("description", data.get("description"));
+
+            if (category.equals("travel")) {
+                documentReference.update("location", data.get("location"));
+            } else if (category.equals("movies") || category.equals("job post")) {
+                documentReference.update("vacancies", data.get("vacancies"));
+            }
         }
 
-        public void removeData(String category, String id){
+        public void removeData(String category, String id) {
             firestore.collection(category.toLowerCase()).document(id).delete();
         }
     }

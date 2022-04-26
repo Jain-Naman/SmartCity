@@ -1,7 +1,5 @@
 package com.example.smartcity.Models;
 
-
-
 public class JobseekerModel {
     private String jobseekerName;
     private String jobseekerDescription;
@@ -33,7 +31,6 @@ public class JobseekerModel {
     public void setJobseekerDescription(String description) {
         this.jobseekerDescription = description;
     }
-
 
     public String getId() {
         return id;

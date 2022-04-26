@@ -37,9 +37,6 @@ public class MovieActivity extends AppCompatActivity {
 
         movieRecyclerView.setAdapter(movieAdapter);
 
-
-
-
         movieAdapter.getFromDatabase();
 
         // travelAdapter.setTravelList(travelList);
