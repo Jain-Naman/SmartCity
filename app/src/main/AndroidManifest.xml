@@ -14,10 +14,12 @@
             android:label="@string/title_activity_movie"
             android:theme="@style/Theme.SmartCity.NoActionBar" >
         </activity>
+        <activity android:name=".UserViews.NewsActivity"/>
+        <activity android:name=".UserViews.JobseekerActivity" />
         <activity android:name=".UserViews.TravelActivity" />
         <activity android:name=".AdminViews.AdminAdd" />
         <activity android:name=".AdminViews.AdminAction" />
-        <activity android:name=".UserViews.TravelActivity" />
+        <activity android:name=".UserViews.InstitutionActivity" />
         <activity android:name=".UserViews.Menu" />
         <activity
             android:name=".SplashScreen"
