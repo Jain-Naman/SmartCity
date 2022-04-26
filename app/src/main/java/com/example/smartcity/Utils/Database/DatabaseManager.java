@@ -27,6 +27,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,10 +53,13 @@ public class DatabaseManager {
                 break;
             }
             case "job post": {
+                List<String> appliedList = new ArrayList<>();
+                appliedList.add(" ");
                 JobseekerModel model = (JobseekerModel) genericModel.getObject();
                 dataMap.put("title", model.getJobseekerName());
                 dataMap.put("description", model.getJobseekerDescription());
                 dataMap.put("vacancies", model.getNumberOfVacancies());
+                dataMap.put("applied", appliedList);
                 break;
             }
             case "institutions": {
@@ -70,10 +75,13 @@ public class DatabaseManager {
                 break;
             }
             case "movies": {
+                List<String> bookedList = new ArrayList<>();
+                bookedList.add(" ");
                 MovieModel model = (MovieModel) genericModel.getObject();
                 dataMap.put("title", model.getMovieTitle());
                 dataMap.put("description", model.getMovieDescription());
                 dataMap.put("vacancies", model.getMovieSeats());
+                dataMap.put("booked", bookedList);
                 break;
             }
         }
@@ -143,7 +151,7 @@ public class DatabaseManager {
         databaseHandler.editMovieData(email, docId, firebaseResponseListener);
     }
 
-    public void editJobBooking(String email, String docId, FirebaseResponseListener<Boolean> firebaseResponseListener){
+    public void editJobBooking(String email, String docId, FirebaseResponseListener<Boolean> firebaseResponseListener) {
         databaseHandler.editJobData(email, docId, firebaseResponseListener);
     }
 

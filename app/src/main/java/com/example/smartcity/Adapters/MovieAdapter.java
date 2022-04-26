@@ -112,7 +112,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                     movieModel.setMovieDescription(d.get("description").toString());
                     movieModel.setId(d.getId());
                     int booked = ((List<String>) d.get("booked")).size();
-                    int temp = Integer.parseInt(d.get("seats").toString());
+                    int temp = Integer.parseInt(d.get("vacancies").toString());
                     movieModel.setMovieSeats(String.valueOf(temp - booked));
 
                     Log.d("firebase", movieModel.getId());

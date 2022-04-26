@@ -103,6 +103,7 @@ public class AdminAdd extends AppCompatActivity {
                         nModel.setNewsHeadline(title.getText().toString());
                         nModel.setDetailedNews(description.getText().toString());
                         nModel.setId(id);
+                        genericModel = new GenericModel<>(nModel);
                         break;
                     case "movies":
                         MovieModel mModel = new MovieModel();
@@ -110,6 +111,7 @@ public class AdminAdd extends AppCompatActivity {
                         mModel.setMovieDescription(description.getText().toString());
                         mModel.setMovieSeats(vacancies.getText().toString());
                         mModel.setId(id);
+                        genericModel = new GenericModel<>(mModel);
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), "Unknown category", Toast.LENGTH_SHORT).show();
