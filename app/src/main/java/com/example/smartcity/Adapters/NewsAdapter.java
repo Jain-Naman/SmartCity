@@ -5,15 +5,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.smartcity.AdminViews.AdminAdd;
+import com.example.smartcity.Globals;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartcity.AdminViews.AdminAdd;
+import com.example.smartcity.Models.InstitutionModel;
+import com.example.smartcity.Utils.Database.DatabaseManager;
+import com.example.smartcity.Utils.FirebaseResponseListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import com.example.smartcity.Globals;
 import com.example.smartcity.Models.NewsModel;
 import com.example.smartcity.UserViews.NewsActivity;
@@ -22,6 +29,7 @@ import com.example.smartcity.R;
 import com.example.smartcity.UserViews.TravelActivity;
 import com.example.smartcity.Utils.Database.DatabaseManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
@@ -86,13 +94,36 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return newsList.size();
+        return newsList == null ? 0 : newsList.size();
     }
 
     public void setNewsList(List<NewsModel> newsList) {
         this.newsList = newsList;
         notifyDataSetChanged();
     }
+
+    public void getFromDatabase() {
+        List<NewsModel> newsModelList = new ArrayList<>();
+
+        DatabaseManager databaseManager = new DatabaseManager();
+
+        databaseManager.fetchData("News", new FirebaseResponseListener<List<DocumentSnapshot>>() {
+            @Override
+
+            public void onCallback(List<DocumentSnapshot> response) {
+                for (DocumentSnapshot d : response) {
+                    NewsModel newsModel = new NewsModel();
+                    newsModel.setNewsHeadline(d.get("title").toString());
+                    newsModel.setDetailedNews(d.get("description").toString());
+                    newsModel.setId(d.getId());
+                    Log.d("firebase", newsModel.getId());
+                    newsModelList.add(newsModel);
+                }
+                setNewsList(newsModelList);
+            }
+        });
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView newsHeadline;

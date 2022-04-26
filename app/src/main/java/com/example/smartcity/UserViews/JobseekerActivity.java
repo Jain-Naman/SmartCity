@@ -36,30 +36,8 @@ public class JobseekerActivity extends AppCompatActivity {
 
         jobseekerRecyclerView.setAdapter(jobseekerAdapter);
 
-        JobseekerModel jobseeker1 = new JobseekerModel();
-        jobseeker1.setJobseekerName("Title 1");
-        jobseeker1.setJobseekerDescription("Lorem ipsum dolor sit amet. 33 consequatur quas in galisum asperiores " +
-                "non beatae inventore? Id deleniti eveniet vel aliquid assumenda in explicabo " +
-                "doloremque cum corrupti nostrum. Vel laborum tempora qui galisum blanditiis nam " +
-                "temporibus doloremque ut atque facilis sed obcaecati quasi non culpa quisquam aut tempore voluptatem.");
+        jobseekerAdapter.getFromDatabase();
 
-        JobseekerModel jobseeker2 = new JobseekerModel();
-        jobseeker2.setJobseekerName("Title 2");
-        jobseeker2.setJobseekerDescription("Lorem ipsum dolor sit amet. 33 consequatur quas in galisum asperiores " +
-                "non beatae inventore? Id deleniti eveniet vel aliquid assumenda in explicabo " +
-                "doloremque cum corrupti nostrum. Vel laborum tempora qui galisum blanditiis nam " +
-                "temporibus doloremque ut atque facilis sed obcaecati quasi non culpa quisquam aut tempore voluptatem.");
-
-        JobseekerModel jobseeker3 = new JobseekerModel();
-        jobseeker3.setJobseekerName("Title 3");
-        jobseeker3.setJobseekerDescription("Lorem ipsum dolor sit amet. 33 consequatur quas in galisum asperiores " +
-                "non beatae inventore? Id deleniti eveniet vel aliquid assumenda in explicabo " +
-                "doloremque cum corrupti nostrum. Vel laborum tempora qui galisum blanditiis nam " +
-                "temporibus doloremque ut atque facilis sed obcaecati quasi non culpa quisquam aut tempore voluptatem.");
-
-        jobseekerList.add(jobseeker1);
-        jobseekerList.add(jobseeker2);
-        jobseekerList.add(jobseeker3);
 
         jobseekerAdapter.setJobseekerList(jobseekerList);
         jobseekerAdapter.notifyDataSetChanged();
