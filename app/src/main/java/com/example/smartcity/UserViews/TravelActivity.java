@@ -9,8 +9,6 @@ import android.os.Bundle;
 import com.example.smartcity.Adapters.TravelAdapter;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
-import com.example.smartcity.Utils.Database.DatabaseManager;
-
 import java.util.ArrayList;
 import java.util.List;
 

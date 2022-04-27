@@ -20,7 +20,7 @@ import com.example.smartcity.Globals;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
 import com.example.smartcity.UserViews.TravelActivity;
-import com.example.smartcity.Utils.Database.DatabaseManager;
+import com.example.smartcity.Utils.Database.TravelDatabaseManager;
 import com.example.smartcity.Utils.FirebaseResponseListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -76,8 +76,8 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 Toast.makeText(travelActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
-                                DatabaseManager databaseManager = new DatabaseManager();
-                                databaseManager.deleteData("travel", item.getId());
+                                TravelDatabaseManager travelDatabaseManager = new TravelDatabaseManager();
+                                travelDatabaseManager.deleteData("travel", item.getId());
                                 travelList.remove(position);
                                 notifyDataSetChanged();
                             }
@@ -111,9 +111,9 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.ViewHolder
     public void getFromDatabase(){
         List<TravelModel> travelModelList = new ArrayList<>();
 
-        DatabaseManager databaseManager = new DatabaseManager();
+        TravelDatabaseManager travelDatabaseManager = new TravelDatabaseManager();
 
-        databaseManager.fetchData("travel", new FirebaseResponseListener<List<DocumentSnapshot>>() {
+        travelDatabaseManager.fetchData("travel", new FirebaseResponseListener<List<DocumentSnapshot>>() {
             @Override
             public void onCallback(List<DocumentSnapshot> response) {
                 for(DocumentSnapshot d: response){

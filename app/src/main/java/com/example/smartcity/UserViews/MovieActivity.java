@@ -11,8 +11,6 @@ import com.example.smartcity.Adapters.MovieAdapter;
 import com.example.smartcity.Models.MovieModel;
 
 import com.example.smartcity.R;
-import com.example.smartcity.Utils.Database.DatabaseManager;
-
 import java.util.ArrayList;
 import java.util.List;
 

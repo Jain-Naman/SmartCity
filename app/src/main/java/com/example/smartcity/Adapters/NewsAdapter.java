@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartcity.AdminViews.AdminAdd;
 import com.example.smartcity.Models.InstitutionModel;
-import com.example.smartcity.Utils.Database.DatabaseManager;
+import com.example.smartcity.Utils.Database.NewsDatabaseManager;
 import com.example.smartcity.Utils.FirebaseResponseListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -27,7 +27,6 @@ import com.example.smartcity.UserViews.NewsActivity;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
 import com.example.smartcity.UserViews.TravelActivity;
-import com.example.smartcity.Utils.Database.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,8 +79,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 Toast.makeText(newsActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
-                                DatabaseManager databaseManager = new DatabaseManager();
-                                databaseManager.deleteData("news", item.getId());
+                                NewsDatabaseManager newsDatabaseManager = new NewsDatabaseManager();
+                                newsDatabaseManager.deleteData("news", item.getId());
                                 newsList.remove(position);
                                 notifyDataSetChanged();
                             }
@@ -105,9 +104,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void getFromDatabase() {
         List<NewsModel> newsModelList = new ArrayList<>();
 
-        DatabaseManager databaseManager = new DatabaseManager();
+        NewsDatabaseManager newsDatabaseManager = new NewsDatabaseManager();
 
-        databaseManager.fetchData("News", new FirebaseResponseListener<List<DocumentSnapshot>>() {
+        newsDatabaseManager.fetchData("News", new FirebaseResponseListener<List<DocumentSnapshot>>() {
             @Override
 
             public void onCallback(List<DocumentSnapshot> response) {

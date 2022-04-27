@@ -20,6 +20,9 @@ import com.example.smartcity.Models.NewsModel;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AdminAdd extends AppCompatActivity {
 
     private EditText title;
@@ -63,61 +66,59 @@ public class AdminAdd extends AppCompatActivity {
             vacancies.setText(extras.getString("vacancies"));
         }
 
-        addController = new AddController(category);
-
         boolean finalToUpdate = toUpdate;
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO - create an abstract class from which other models inherit
-                Log.d("generic_model", "Clicked submit");
-                GenericModel genericModel = null;
+                Map<String, String> data = new HashMap<>();
+                data.put("title", title.getText().toString());
+                data.put("description", description.getText().toString());
+                data.put("location", location.getText().toString());
+                data.put("vacancies", vacancies.getText().toString());
+                data.put("id", id);
 
-                switch (category) {
-                    case "travel":
-                        TravelModel tModel = new TravelModel();
-                        tModel.setTravelTitle(title.getText().toString());
-                        tModel.setTravelDescription(description.getText().toString());
-                        tModel.setLocation(location.getText().toString().trim());
-                        tModel.setId(id);
-                        genericModel = new GenericModel<>(tModel);
-                        break;
-                    case "job post":
-                        JobseekerModel jModel = new JobseekerModel();
-                        jModel.setJobseekerName(title.getText().toString());
-                        jModel.setJobseekerDescription(description.getText().toString());
-                        jModel.setNumberOfVacancies(vacancies.getText().toString());
-                        jModel.setId(id);
-                        genericModel = new GenericModel<>(jModel);
-                        break;
-                    case "institutions":
-                        InstitutionModel iModel = new InstitutionModel();
-                        iModel.setInstitutionName(title.getText().toString());
-                        iModel.setInstitutionDescription(description.getText().toString());
-                        iModel.setId(id);
-                        genericModel = new GenericModel<>(iModel);
-                        break;
-                    case "news":
-                        NewsModel nModel = new NewsModel();
-                        nModel.setNewsHeadline(title.getText().toString());
-                        nModel.setDetailedNews(description.getText().toString());
-                        nModel.setId(id);
-                        genericModel = new GenericModel<>(nModel);
-                        break;
-                    case "movies":
-                        MovieModel mModel = new MovieModel();
-                        mModel.setMovieTitle(title.getText().toString());
-                        mModel.setMovieDescription(description.getText().toString());
-                        mModel.setMovieSeats(vacancies.getText().toString());
-                        mModel.setId(id);
-                        genericModel = new GenericModel<>(mModel);
-                        break;
-                    default:
-                        Toast.makeText(getApplicationContext(), "Unknown category", Toast.LENGTH_SHORT).show();
-                        throw new IllegalStateException("Unexpected value: " + category);
-                }
-                addController.addOrUpdateItemInDatabase(finalToUpdate, genericModel);
+                addController = new AddController();
+                addController.addOrUpdateItemInDatabase(finalToUpdate, category ,data);
+//
+//                switch (category) {
+//                    case "travel":
+//                        TravelModel tModel = new TravelModel();
+//                        tModel.setTravelTitle(title.getText().toString());
+//                        tModel.setTravelDescription(description.getText().toString());
+//                        tModel.setLocation(location.getText().toString().trim());
+//                        tModel.setId(id);
+//                        break;
+//                    case "job post":
+//                        JobseekerModel jModel = new JobseekerModel();
+//                        jModel.setJobseekerName(title.getText().toString());
+//                        jModel.setJobseekerDescription(description.getText().toString());
+//                        jModel.setNumberOfVacancies(vacancies.getText().toString());
+//                        jModel.setId(id);
+//                        break;
+//                    case "institutions":
+//                        InstitutionModel iModel = new InstitutionModel();
+//                        iModel.setInstitutionName(title.getText().toString());
+//                        iModel.setInstitutionDescription(description.getText().toString());
+//                        iModel.setId(id);
+//                        break;
+//                    case "news":
+//                        NewsModel nModel = new NewsModel();
+//                        nModel.setNewsHeadline(title.getText().toString());
+//                        nModel.setDetailedNews(description.getText().toString());
+//                        nModel.setId(id);
+//                        break;
+//                    case "movies":
+//                        MovieModel mModel = new MovieModel();
+//                        mModel.setMovieTitle(title.getText().toString());
+//                        mModel.setMovieDescription(description.getText().toString());
+//                        mModel.setMovieSeats(vacancies.getText().toString());
+//                        mModel.setId(id);
+//                        break;
+//                    default:
+//                        Toast.makeText(getApplicationContext(), "Unknown category", Toast.LENGTH_SHORT).show();
+//                        throw new IllegalStateException("Unexpected value: " + category);
+//                }
                 Toast.makeText(getApplicationContext(), "Details added/updated successfully!", Toast.LENGTH_SHORT).show();
                 finish();
             }

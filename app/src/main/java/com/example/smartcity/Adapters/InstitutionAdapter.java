@@ -11,16 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-//import com.example.smartcity.Utils.Database.DatabaseManager;
-//
-//import com.example.smartcity.Utils.FirebaseResponseListener;
-
-import com.example.smartcity.Utils.Database.DatabaseManager;
-
+import com.example.smartcity.Utils.Database.InstitutionDatabaseManager;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.example.smartcity.Utils.Database.DatabaseManager;
-//
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +63,7 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                 i.putExtra("category", "institutions");
                 i.putExtra("title", item.getInstitutionName());
                 i.putExtra("description", item.getInstitutionDescription());
+                i.putExtra("id", item.getId());
                 institutionActivity.startActivity(i);
                 institutionActivity.finish();
             }
@@ -86,8 +80,8 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 Toast.makeText(institutionActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
-                                DatabaseManager databaseManager = new DatabaseManager();
-                                databaseManager.deleteData("institutions", item.getId());
+                                InstitutionDatabaseManager institutionDatabaseManager = new InstitutionDatabaseManager();
+                                institutionDatabaseManager.deleteData("institutions", item.getId());
                                 institutionList.remove(position);
                                 notifyDataSetChanged();
                             }
@@ -111,9 +105,9 @@ public class InstitutionAdapter extends RecyclerView.Adapter<InstitutionAdapter.
     public void getFromDatabase() {
         List<InstitutionModel> institutionModelList = new ArrayList<>();
 
-        DatabaseManager databaseManager = new DatabaseManager();
+        InstitutionDatabaseManager institutionDatabaseManager = new InstitutionDatabaseManager();
 
-        databaseManager.fetchData("institutions", new FirebaseResponseListener<List<DocumentSnapshot>>() {
+        institutionDatabaseManager.fetchData("institutions", new FirebaseResponseListener<List<DocumentSnapshot>>() {
             @Override
             public void onCallback(List<DocumentSnapshot> response) {
                 for (DocumentSnapshot d : response) {

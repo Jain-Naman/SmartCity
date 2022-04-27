@@ -27,7 +27,7 @@ import com.example.smartcity.UserViews.JobseekerActivity;
 import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
 import com.example.smartcity.UserViews.TravelActivity;
-import com.example.smartcity.Utils.Database.DatabaseManager;
+import com.example.smartcity.Utils.Database.JobDatabaseManager;
 import com.example.smartcity.Utils.FirebaseResponseListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -69,7 +69,7 @@ public class JobseekerAdapter extends RecyclerView.Adapter<JobseekerAdapter.View
 
                 // go to AdminAdd with the existing information
                 final Intent i = new Intent(jobseekerActivity.getApplication(), AdminAdd.class);
-                i.putExtra("category", "travel");
+                i.putExtra("category", "job post");
                 i.putExtra("title", item.getJobseekerName());
                 i.putExtra("description", item.getJobseekerDescription());
                 i.putExtra("vacancies", item.getNumberOfVacancies());
@@ -90,8 +90,8 @@ public class JobseekerAdapter extends RecyclerView.Adapter<JobseekerAdapter.View
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
                                 Toast.makeText(jobseekerActivity.getApplicationContext(), "Delete Confirmed!", Toast.LENGTH_SHORT).show();
-                                DatabaseManager databaseManager = new DatabaseManager();
-                                databaseManager.deleteData("job post", item.getId());
+                                JobDatabaseManager jobDatabaseManager = new JobDatabaseManager();
+                                jobDatabaseManager.deleteData("job post", item.getId());
                                 jobseekerList.remove(position);
                                 notifyDataSetChanged();
                             }
@@ -104,8 +104,8 @@ public class JobseekerAdapter extends RecyclerView.Adapter<JobseekerAdapter.View
         holder.applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseManager databaseManager = new DatabaseManager();
-                databaseManager.editJobBooking(Globals.email, item.getId(), new FirebaseResponseListener<Boolean>() {
+                JobDatabaseManager jobDatabaseManager = new JobDatabaseManager();
+                jobDatabaseManager.editJobBooking(Globals.email, item.getId(), new FirebaseResponseListener<Boolean>() {
                     @Override
                     public void onCallback(Boolean response) {
                         //bookedSeats = response;
@@ -137,9 +137,9 @@ public class JobseekerAdapter extends RecyclerView.Adapter<JobseekerAdapter.View
     public void getFromDatabase(){
         List<JobseekerModel> jobseekerModelList = new ArrayList<>();
 
-        DatabaseManager databaseManager = new DatabaseManager();
+        JobDatabaseManager jobDatabaseManager = new JobDatabaseManager();
 
-        databaseManager.fetchData("job post", new FirebaseResponseListener<List<DocumentSnapshot>>() {
+        jobDatabaseManager.fetchData("job post", new FirebaseResponseListener<List<DocumentSnapshot>>() {
             @Override
             public void onCallback(List<DocumentSnapshot> response) {
                 for(DocumentSnapshot d: response){

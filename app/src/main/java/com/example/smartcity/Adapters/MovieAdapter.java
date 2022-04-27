@@ -29,7 +29,7 @@ import com.example.smartcity.Models.TravelModel;
 import com.example.smartcity.R;
 
 import com.example.smartcity.UserViews.MovieActivity;
-import com.example.smartcity.Utils.Database.DatabaseManager;
+import com.example.smartcity.Utils.Database.MovieDatabaseManager;
 import com.example.smartcity.Utils.FirebaseResponseListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -67,8 +67,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseManager databaseManager = new DatabaseManager();
-                databaseManager.editMovieBooking(Globals.email, item.getId(), new FirebaseResponseListener<Boolean>() {
+                MovieDatabaseManager movieDatabaseManager = new MovieDatabaseManager();
+                movieDatabaseManager.editMovieBooking(Globals.email, item.getId(), new FirebaseResponseListener<Boolean>() {
                     @Override
                     public void onCallback(Boolean response) {
                         bookedSeats = response;
@@ -101,9 +101,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void getFromDatabase() {
         List<MovieModel> movieModelList = new ArrayList<>();
 
-        DatabaseManager databaseManager = new DatabaseManager();
+        MovieDatabaseManager movieDatabaseManager = new MovieDatabaseManager();
 
-        databaseManager.fetchData("movies", new FirebaseResponseListener<List<DocumentSnapshot>>() {
+        movieDatabaseManager.fetchData("movies", new FirebaseResponseListener<List<DocumentSnapshot>>() {
             @Override
             public void onCallback(List<DocumentSnapshot> response) {
                 for (DocumentSnapshot d : response) {
@@ -114,7 +114,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                     int booked = ((List<String>) d.get("booked")).size();
                     int temp = Integer.parseInt(d.get("vacancies").toString());
                     movieModel.setMovieSeats(String.valueOf(temp - booked));
-
                     Log.d("firebase", movieModel.getId());
                     movieModelList.add(movieModel);
                 }
