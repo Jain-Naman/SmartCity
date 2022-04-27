@@ -23,7 +23,7 @@ public class JobDatabaseManager {
 
         dataMap.put("title", jobseekerModel.getJobseekerName());
         dataMap.put("description", jobseekerModel.getJobseekerDescription());
-        dataMap.put("vacnacies", jobseekerModel.getNumberOfVacancies());
+        dataMap.put("vacancies", jobseekerModel.getNumberOfVacancies());
         dataMap.put("applied", appliedList);
 
         databaseHandler.putData(dataMap, category);
